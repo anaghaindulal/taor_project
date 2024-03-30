@@ -1,5 +1,5 @@
 import random
-from SEM1_lecture_and_rooms import courses, hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours
+
 def generate_random_timetable(courses, hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours):
     timetable = []
     assigned_courses = set()  # Used to track the courses that have been allocated
