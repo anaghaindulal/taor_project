@@ -23,3 +23,13 @@ def calculate_conflicts(timetable):
             time_slot_counts[(day, hour)] += 1
     conflicts = sum(count > 1 for count in time_slot_counts.values())
     return conflicts
+
+def print_timetable(timetable, hours_per_course):
+    sorted_timetable = sorted(timetable, key=lambda x: (x[2], x[3]))  # Sort by day and hour
+    for entry in sorted_timetable:
+        course, room, day, hour = entry
+        duration = hours_per_course[course]
+        if duration == 1:
+            print(f"Course Code: {course}, Room Name: {room}, Day {day}, Hour {hour}")
+        elif duration == 2:
+            print(f"Course Code: {course}, Room Name: {room}, Day {day}, Hours {hour} and {hour + 1}")
