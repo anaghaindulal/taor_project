@@ -74,6 +74,7 @@ courses = ['MATH08057',
     'MATH11176',
     'MATH11154',
     'MATH11179']
+
 students_per_course = {'MATH08071A': 71,
   'MATH08071': 71,
   'MATH11226A': 38,
