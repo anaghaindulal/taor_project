@@ -1,6 +1,7 @@
 import copy
 import random
 from utility_functions import calculate_conflicts, get_unused_classrooms_count
+import matplotlib.pyplot as plt
 # Assuming previously defined functions and variables are still valid
 
 def fitness(timetable, hours_per_course, students_per_course, room_capacities, rooms):
@@ -88,11 +89,43 @@ def mutate(individual, mutation_rate=0.05):
         individual.timetable[mutate_index] = (course, room, day, mutated_hour)
         individual.fitness = calculate_fitness(individual.timetable, individual.hours_per_course, individual.students_per_course, individual.room_capacities, individual.rooms, individual.max_lecture_hours)
 
+# def genetic_algorithm_optimize(initial_timetable, hours_per_course, students_per_course, room_capacities, rooms, max_lecture_hours, population_size=1000, generations=200):
+#     population = [
+#         Individual(copy.deepcopy(initial_timetable), hours_per_course, students_per_course, room_capacities, rooms, max_lecture_hours)
+#         for _ in range(population_size)
+#     ]
+#     for generation in range(generations):
+#         new_population = []
+
+#         while len(new_population) < population_size:
+#             parent1 = tournament_selection(population)
+#             parent2 = roulette_wheel_selection(population)
+#             child1, child2 = crossover(parent1, parent2)
+#             mutate(child1)
+#             mutate(child2)
+#             new_population.extend([child1, child2])
+
+#         population = new_population[:population_size]
+#         population.sort(key=lambda x: x.fitness, reverse=True)
+
+#         # At the end of each generation, print the number of unused classrooms and conflicts
+#         best_solution = population[0].timetable
+#         conflicts = calculate_conflicts(best_solution)
+#         unused_rooms_count = get_unused_classrooms_count(best_solution, rooms)
+#         print(f"Generation {generation + 1}: Conflicts = {conflicts}, Unused Classrooms = {unused_rooms_count}")
+
+#     return population[0].timetable
+
 def genetic_algorithm_optimize(initial_timetable, hours_per_course, students_per_course, room_capacities, rooms, max_lecture_hours, population_size=1000, generations=200):
     population = [
         Individual(copy.deepcopy(initial_timetable), hours_per_course, students_per_course, room_capacities, rooms, max_lecture_hours)
         for _ in range(population_size)
     ]
+    
+    # 初始化存储历史数据的列表
+    conflicts_history = []
+    unused_rooms_history = []
+
     for generation in range(generations):
         new_population = []
 
@@ -107,10 +140,25 @@ def genetic_algorithm_optimize(initial_timetable, hours_per_course, students_per
         population = new_population[:population_size]
         population.sort(key=lambda x: x.fitness, reverse=True)
 
-        # At the end of each generation, print the number of unused classrooms and conflicts
         best_solution = population[0].timetable
         conflicts = calculate_conflicts(best_solution)
         unused_rooms_count = get_unused_classrooms_count(best_solution, rooms)
-        print(f"Generation {generation + 1}: Conflicts = {conflicts}, Unused Classrooms = {unused_rooms_count}")
+        
+        # 更新历史数据
+        conflicts_history.append(conflicts)
+        unused_rooms_history.append(unused_rooms_count)
+
+        # print(f"Generation {generation + 1}: Conflicts = {conflicts}, Unused Classrooms = {unused_rooms_count}")
+
+    # 绘图
+    plt.figure(figsize=(10, 5))
+    plt.plot(conflicts_history, label='Conflicts')
+    plt.plot(unused_rooms_history, label='Unused Rooms')
+    plt.xlabel('Generation')
+    plt.ylabel('Count')
+    plt.title('Genetic Algorithm Optimization Process')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
     return population[0].timetable
