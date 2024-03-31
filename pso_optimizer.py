@@ -1,6 +1,6 @@
 import copy
 import random
-from utility_functions import calculate_conflicts, print_timetable, get_unused_classrooms_count
+from utility_functions import calculate_conflicts, get_unused_classrooms_count
 
 
 
