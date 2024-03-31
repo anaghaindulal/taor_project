@@ -1,6 +1,6 @@
 import random
 import math
-from SEM1_lecture_and_rooms import courses, hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours
+
 from utility_functions import calculate_conflicts, get_unused_classrooms_count
 
 random.seed(43)
