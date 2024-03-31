@@ -1,5 +1,6 @@
 import copy
 import random
+import matplotlib.pyplot as plt
 from utility_functions import calculate_conflicts, get_unused_classrooms_count
 
 
@@ -57,11 +58,42 @@ def get_unused_classrooms_count(timetable, rooms):
     unused_rooms_count = len(set(rooms) - used_rooms)
     return unused_rooms_count
 
+# def pso_optimize(initial_timetable, hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours, num_particles=30, max_iterations=10000, print_frequency=100):
+#     particles = [Particle(initial_timetable, hours_per_course, students_per_course, room_capacities, rooms) for _ in range(num_particles)]
+#     global_best_position = copy.deepcopy(initial_timetable)
+#     # Ensure all necessary parameters are provided when calculating global best fitness
+#     global_best_fitness = fitness(initial_timetable, hours_per_course, students_per_course, room_capacities, rooms)
+
+#     for iteration in range(max_iterations):
+#         for particle in particles:
+#             update_velocity(particle, global_best_position)
+#             update_position(particle, weekdays_num, max_lecture_hours)
+#             current_fitness = fitness(particle.position, hours_per_course, students_per_course, room_capacities, rooms)
+
+#             if current_fitness > particle.best_fitness:
+#                 particle.best_position = copy.deepcopy(particle.position)
+#                 particle.best_fitness = current_fitness
+
+#             if current_fitness > global_best_fitness:
+#                 global_best_position = copy.deepcopy(particle.position)
+#                 global_best_fitness = current_fitness
+
+#         if iteration % print_frequency == 0 or iteration == max_iterations - 1:
+#             unused_rooms_count = get_unused_classrooms_count(global_best_position, rooms)
+#             conflicts_count = calculate_conflicts(global_best_position)
+#             print(f"Iteration {iteration + 1}, Conflicts: {conflicts_count}, Unused Rooms: {unused_rooms_count}")
+
+#     return global_best_position
+
+
 def pso_optimize(initial_timetable, hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours, num_particles=30, max_iterations=10000, print_frequency=100):
     particles = [Particle(initial_timetable, hours_per_course, students_per_course, room_capacities, rooms) for _ in range(num_particles)]
     global_best_position = copy.deepcopy(initial_timetable)
-    # Ensure all necessary parameters are provided when calculating global best fitness
     global_best_fitness = fitness(initial_timetable, hours_per_course, students_per_course, room_capacities, rooms)
+    
+    # 初始化存储历史数据的列表
+    conflicts_history = []
+    unused_rooms_history = []
 
     for iteration in range(max_iterations):
         for particle in particles:
@@ -80,6 +112,22 @@ def pso_optimize(initial_timetable, hours_per_course, students_per_course, room_
         if iteration % print_frequency == 0 or iteration == max_iterations - 1:
             unused_rooms_count = get_unused_classrooms_count(global_best_position, rooms)
             conflicts_count = calculate_conflicts(global_best_position)
-            print(f"Iteration {iteration + 1}, Conflicts: {conflicts_count}, Unused Rooms: {unused_rooms_count}")
+            
+            # 更新历史数据
+            conflicts_history.append(conflicts_count)
+            unused_rooms_history.append(unused_rooms_count)
+
+            # print(f"Iteration {iteration + 1}, Conflicts: {conflicts_count}, Unused Rooms: {unused_rooms_count}")
+
+    # 绘图
+    plt.figure(figsize=(10, 5))
+    plt.plot(conflicts_history, label='Conflicts')
+    plt.plot(unused_rooms_history, label='Unused Rooms')
+    plt.xlabel('Iteration')
+    plt.ylabel('Count')
+    plt.title('PSO Optimization Process')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
     return global_best_position
