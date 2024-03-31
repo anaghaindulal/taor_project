@@ -85,7 +85,7 @@ def mutate(timetable, courses, hours_per_course, room_capacities, rooms, weekday
 # Simulated annealing process
 # Parameter adjustment during the simulated annealing process
 
-def simulated_annealing(timetable, hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours, max_iterations=100000):
+def simulated_annealing(timetable, courses,hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours, max_iterations=100000):
     initial_temp = 10000000
     final_temp = 0.0001
     alpha = 0.92
