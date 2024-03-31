@@ -1,5 +1,5 @@
 from random_timetable_generator import generate_random_timetable
-from simulated_annealing_optimizer import simulated_annealing
+from simulated_annealing import simulated_annealing
 from pso_optimizer import pso_optimize
 from genetic_algorithm_optimizer import genetic_algorithm_optimize
 from SEM1_lecture_and_rooms import courses, hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours
