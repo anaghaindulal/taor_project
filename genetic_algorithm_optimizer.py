@@ -3,6 +3,32 @@ import random
 from utility_functions import calculate_conflicts, get_unused_classrooms_count
 # Assuming previously defined functions and variables are still valid
 
+def fitness(timetable, hours_per_course, students_per_course, room_capacities, rooms):
+    conflicts = 0
+    time_slot_counts = {}
+    used_rooms = set()
+    
+    for course, room, day, hour in timetable:
+        # Track used classrooms
+        used_rooms.add(room)
+
+        # Count time slot conflicts
+        if (day, hour) not in time_slot_counts:
+            time_slot_counts[(day, hour)] = 1
+        else:
+            time_slot_counts[(day, hour)] += 1
+
+    conflicts = sum(count > 1 for count in time_slot_counts.values())
+    
+    # Calculate the number of unused classrooms
+    unused_rooms = len(set(rooms) - used_rooms)
+    
+    # Add a small penalty for each unused classroom, choose a very small weight (e.g., 0.01) to ensure the main focus is on the number of conflicts
+    room_penalty = 0.01 * unused_rooms
+    
+    # Fitness is primarily determined by the number of conflicts, while also considering the number of unused classrooms
+    return -conflicts - room_penalty
+    
 def calculate_fitness(timetable, hours_per_course, students_per_course, room_capacities, rooms, max_lecture_hours):
     conflict_score = -fitness(timetable, hours_per_course, students_per_course, room_capacities, rooms)
     unused_rooms_count = get_unused_classrooms_count(timetable, rooms)
