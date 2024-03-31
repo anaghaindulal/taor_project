@@ -1,5 +1,6 @@
 import random
 import math
+import matplotlib.pyplot as plt
 
 from utility_functions import calculate_conflicts, get_unused_classrooms_count,get_unused_classrooms_count
 
@@ -85,11 +86,47 @@ def mutate(students_per_course,timetable, courses, hours_per_course, room_capaci
 # Simulated annealing process
 # Parameter adjustment during the simulated annealing process
 
-def simulated_annealing(timetable, courses,hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours, max_iterations=100000):
+# def simulated_annealing(timetable, courses,hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours, max_iterations=100000):
+#     initial_temp = 10000000
+#     final_temp = 0.0001
+#     alpha = 0.92
+#     current_temp = initial_temp
+
+#     current_solution = timetable
+#     current_fitness = fitness(current_solution, hours_per_course, students_per_course, room_capacities, rooms)
+#     best_solution = current_solution
+#     best_fitness = current_fitness
+
+#     iteration = 0
+#     while current_temp > final_temp and iteration < max_iterations:
+#         new_solution = mutate(students_per_course,current_solution, courses, hours_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours)
+#         new_fitness = fitness(new_solution, hours_per_course, students_per_course, room_capacities, rooms)
+
+#         if new_fitness > current_fitness or random.random() < math.exp((new_fitness - current_fitness) / current_temp):
+#             current_solution = new_solution
+#             current_fitness = new_fitness
+#             if current_fitness > best_fitness:
+#                 best_solution = current_solution
+#                 best_fitness = current_fitness
+
+#         current_temp *= alpha
+#         iteration += 1  # Update iteration count
+
+#         # Separately calculate the number of unused classrooms
+#         unused_rooms_count = get_unused_classrooms_count(best_solution, rooms)
+#         # Directly calculate the number of conflicts
+#         conflicts = calculate_conflicts(best_solution)
+#         print(f"Iteration: {iteration}, Current best solution conflicts: {conflicts}, Unused classrooms count: {unused_rooms_count}")
+    
+#     return best_solution
+def simulated_annealing(timetable, courses, hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours, max_iterations=100000):
     initial_temp = 10000000
     final_temp = 0.0001
     alpha = 0.92
     current_temp = initial_temp
+
+    conflicts_history = []  # 记录冲突数历史
+    unused_rooms_history = []  # 记录未使用教室数历史
 
     current_solution = timetable
     current_fitness = fitness(current_solution, hours_per_course, students_per_course, room_capacities, rooms)
@@ -98,7 +135,7 @@ def simulated_annealing(timetable, courses,hours_per_course, students_per_course
 
     iteration = 0
     while current_temp > final_temp and iteration < max_iterations:
-        new_solution = mutate(students_per_course,current_solution, courses, hours_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours)
+        new_solution = mutate(students_per_course, current_solution, courses, hours_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours)
         new_fitness = fitness(new_solution, hours_per_course, students_per_course, room_capacities, rooms)
 
         if new_fitness > current_fitness or random.random() < math.exp((new_fitness - current_fitness) / current_temp):
@@ -109,12 +146,25 @@ def simulated_annealing(timetable, courses,hours_per_course, students_per_course
                 best_fitness = current_fitness
 
         current_temp *= alpha
-        iteration += 1  # Update iteration count
+        iteration += 1
 
-        # Separately calculate the number of unused classrooms
         unused_rooms_count = get_unused_classrooms_count(best_solution, rooms)
-        # Directly calculate the number of conflicts
         conflicts = calculate_conflicts(best_solution)
-        print(f"Iteration: {iteration}, Current best solution conflicts: {conflicts}, Unused classrooms count: {unused_rooms_count}")
+        
+        conflicts_history.append(conflicts)  # 更新冲突数历史
+        unused_rooms_history.append(unused_rooms_count)  # 更新未使用教室数历史
+
+#         print(f"Iteration: {iteration}, Current best solution conflicts: {conflicts}, Unused classrooms count: {unused_rooms_count}")
+
+    # 绘图部分
+    plt.figure(figsize=(10, 5))
+    plt.plot(conflicts_history, label='Conflicts')
+    plt.plot(unused_rooms_history, label='Unused Rooms')
+    plt.xlabel('Iteration')
+    plt.ylabel('Count')
+    plt.title('Optimization Process Visualization')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
     
     return best_solution
