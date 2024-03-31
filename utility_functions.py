@@ -1,3 +1,8 @@
+def get_unused_classrooms_count(timetable, rooms):
+    used_rooms = {entry[1] for entry in timetable}
+    unused_rooms_count = len(set(rooms) - used_rooms)
+    return unused_rooms_count
+    
 def print_unused_classrooms(timetable, rooms):
     used_rooms = {entry[1] for entry in timetable}
     unused_rooms = set(rooms) - used_rooms
