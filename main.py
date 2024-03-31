@@ -15,7 +15,7 @@ def main():
 
     # 使用模拟退火优化随机时间表
     print("\nStep 2: Optimizing Timetable using Simulated Annealing")
-    sa_optimized_timetable = simulated_annealing(initial_timetable, hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours, max_iterations=100000)
+    sa_optimized_timetable = simulated_annealing(initial_timetable,courses, hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours, max_iterations=100000)
     print_timetable(sa_optimized_timetable, hours_per_course)
     print("SA Optimized Conflicts:", calculate_conflicts(sa_optimized_timetable))
     print_unused_classrooms(sa_optimized_timetable, rooms)
