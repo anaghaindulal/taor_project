@@ -236,28 +236,4 @@ room_capacities = {
 }
 weekdays_num = 5
 max_lecture_hours = 9
-# Check that each course in the courses list has a corresponding entry in the students_per_course dictionary
-missing_courses_in_students = [course for course in courses if course not in students_per_course]
-if missing_courses_in_students:
-    print("The following courses are missing from the students_per_course dictionary:", missing_courses_in_students)
 
-
-# Check that each course in the courses list has a corresponding entry in the students_per_course dictionary
-missing_courses_in_hours = [course for course in courses if course not in hours_per_course]
-if missing_courses_in_hours:
-    print("The following courses are missing from the hours_per_course dictionary:", missing_courses_in_hours)
-
-
-# Check that each course has at least one classroom that can accommodate its student population
-courses_without_room = []
-for course, num_students in students_per_course.items():
-    if not any(room_capacities[room] >= num_students for room in rooms):
-        courses_without_room.append(course)
-
-if courses_without_room:
-    print("The following courses do not have large enough classrooms:", courses_without_room)
-#check repeat courses
-duplicates = set([course for course in courses if courses.count(course) > 1])
-
-# Output the duplicates
-print(duplicates)
