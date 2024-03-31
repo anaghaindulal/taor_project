@@ -58,7 +58,7 @@ def fitness(timetable, hours_per_course, students_per_course, room_capacities, r
 
 
 # Mutation function, randomly changes the time or classroom of a course
-def mutate(timetable, courses, hours_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours):
+def mutate(students_per_course,timetable, courses, hours_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours):
     course_to_mutate = random.choice(list(courses))
     mutated_timetable = [entry for entry in timetable if entry[0] != course_to_mutate]
 
@@ -98,7 +98,7 @@ def simulated_annealing(timetable, courses,hours_per_course, students_per_course
 
     iteration = 0
     while current_temp > final_temp and iteration < max_iterations:
-        new_solution = mutate(current_solution, courses, hours_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours)
+        new_solution = mutate(students_per_course,current_solution, courses, hours_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours)
         new_fitness = fitness(new_solution, hours_per_course, students_per_course, room_capacities, rooms)
 
         if new_fitness > current_fitness or random.random() < math.exp((new_fitness - current_fitness) / current_temp):
