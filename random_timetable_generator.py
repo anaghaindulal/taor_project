@@ -26,8 +26,3 @@ def generate_random_timetable(courses, hours_per_course, students_per_course, ro
 
     return timetable
 
-# Generate initial population
-initial_population = [
-    generate_random_timetable(courses, hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours)
-    for _ in range(10)
-]
