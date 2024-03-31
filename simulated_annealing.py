@@ -86,39 +86,8 @@ def mutate(students_per_course,timetable, courses, hours_per_course, room_capaci
 # Simulated annealing process
 # Parameter adjustment during the simulated annealing process
 
-# def simulated_annealing(timetable, courses,hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours, max_iterations=100000):
-#     initial_temp = 10000000
-#     final_temp = 0.0001
-#     alpha = 0.92
-#     current_temp = initial_temp
 
-#     current_solution = timetable
-#     current_fitness = fitness(current_solution, hours_per_course, students_per_course, room_capacities, rooms)
-#     best_solution = current_solution
-#     best_fitness = current_fitness
 
-#     iteration = 0
-#     while current_temp > final_temp and iteration < max_iterations:
-#         new_solution = mutate(students_per_course,current_solution, courses, hours_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours)
-#         new_fitness = fitness(new_solution, hours_per_course, students_per_course, room_capacities, rooms)
-
-#         if new_fitness > current_fitness or random.random() < math.exp((new_fitness - current_fitness) / current_temp):
-#             current_solution = new_solution
-#             current_fitness = new_fitness
-#             if current_fitness > best_fitness:
-#                 best_solution = current_solution
-#                 best_fitness = current_fitness
-
-#         current_temp *= alpha
-#         iteration += 1  # Update iteration count
-
-#         # Separately calculate the number of unused classrooms
-#         unused_rooms_count = get_unused_classrooms_count(best_solution, rooms)
-#         # Directly calculate the number of conflicts
-#         conflicts = calculate_conflicts(best_solution)
-#         print(f"Iteration: {iteration}, Current best solution conflicts: {conflicts}, Unused classrooms count: {unused_rooms_count}")
-    
-#     return best_solution
 def simulated_annealing(timetable, courses, hours_per_course, students_per_course, room_capacities, rooms, weekdays_num, max_lecture_hours, max_iterations=100000):
     initial_temp = 10000000
     final_temp = 0.0001
