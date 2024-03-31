@@ -1,7 +1,7 @@
 import random
 import math
 
-from utility_functions import calculate_conflicts, get_unused_classrooms_count
+from utility_functions import calculate_conflicts, get_unused_classrooms_count,get_unused_classrooms_count
 
 random.seed(43)
 
