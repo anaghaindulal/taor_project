@@ -125,8 +125,8 @@ def simulated_annealing(timetable, courses, hours_per_course, students_per_cours
     alpha = 0.92
     current_temp = initial_temp
 
-    conflicts_history = []  # 记录冲突数历史
-    unused_rooms_history = []  # 记录未使用教室数历史
+    conflicts_history = [] 
+    unused_rooms_history = []  
 
     current_solution = timetable
     current_fitness = fitness(current_solution, hours_per_course, students_per_course, room_capacities, rooms)
@@ -151,12 +151,12 @@ def simulated_annealing(timetable, courses, hours_per_course, students_per_cours
         unused_rooms_count = get_unused_classrooms_count(best_solution, rooms)
         conflicts = calculate_conflicts(best_solution)
         
-        conflicts_history.append(conflicts)  # 更新冲突数历史
-        unused_rooms_history.append(unused_rooms_count)  # 更新未使用教室数历史
+        conflicts_history.append(conflicts)  # update
+        unused_rooms_history.append(unused_rooms_count)  # update
 
 #         print(f"Iteration: {iteration}, Current best solution conflicts: {conflicts}, Unused classrooms count: {unused_rooms_count}")
 
-    # 绘图部分
+    # plot
     plt.figure(figsize=(10, 5))
     plt.plot(conflicts_history, label='Conflicts')
     plt.plot(unused_rooms_history, label='Unused Rooms')
